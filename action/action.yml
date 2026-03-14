@@ -1,0 +1,51 @@
+name: "Dead Code Finder"
+description: "AI-powered dead code finder using GitHub Copilot SDK. Identifies unused functions, orphaned modules, dead APIs, and unreachable code."
+author: "Dead Code Finder"
+
+inputs:
+  path:
+    description: "Path to the project directory to scan (relative to repository root)"
+    required: false
+    default: "."
+  github-token:
+    description: "GitHub token for creating PRs. Defaults to the built-in GITHUB_TOKEN."
+    required: false
+    default: ${{ github.token }}
+  confidence:
+    description: "Minimum confidence threshold: high, medium, or all"
+    required: false
+    default: "medium"
+  create-pr:
+    description: "Whether to create a cleanup PR with the findings"
+    required: false
+    default: "false"
+  base-branch:
+    description: "Base branch for the cleanup PR"
+    required: false
+    default: "main"
+  format:
+    description: "Output format: markdown or json"
+    required: false
+    default: "markdown"
+  mode:
+    description: "Analysis mode: agent (uses Copilot SDK) or direct (static analysis only)"
+    required: false
+    default: "direct"
+
+outputs:
+  findings-count:
+    description: "Total number of dead code findings"
+  findings-json:
+    description: "JSON string of all findings"
+  report:
+    description: "Formatted report (markdown or json based on format input)"
+  pr-url:
+    description: "URL of the created cleanup PR (if create-pr is true)"
+
+runs:
+  using: "node20"
+  main: "dist/action.js"
+
+branding:
+  icon: "search"
+  color: "red"
